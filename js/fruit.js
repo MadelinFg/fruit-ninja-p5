@@ -1,5 +1,5 @@
-// FRUIT 
-function Fruit(x,y,speed,color,size,fruit,slicedFruit1,slicedFruit2,name){
+// FRUIT
+function Fruit(x, y, speed, color, size, fruit, slicedFruit1, slicedFruit2, name) {
     this.x = x;
     this.y = y;
     this.speed = speed;
@@ -15,34 +15,45 @@ function Fruit(x,y,speed,color,size,fruit,slicedFruit1,slicedFruit2,name){
     this.visible = true;
 }
 
-Fruit.prototype.draw = function(){
+Fruit.prototype.draw = function () {
     fill(this.color);
-    if(this.sliced && this.name != 'boom'){ // Draw sliced fruit
-        image(this.slicedFruit1, this.x - 25, this.y, this.size, this.size);
-        image(this.slicedFruit2, this.x + 25, this.y, this.size, this.size);
-    }else{ // Draw fruit
-        image(this.fruit, this.x, this.y, this.size, this.size);
+    if (this.sliced && this.name != 'boom') { // Draw sliced fruit
+
+        /**
+         * @params path - x - y - width - height
+         */
+        image(this.slicedFruit1, this.x - 25, this.y, this.size+50, this.size+50);
+        image(this.slicedFruit2, this.x + 25, this.y, this.size+50, this.size+50);
+    } else { // Draw fruit
+        /**
+         * @params path - x - y - width - height
+        */
+        image(this.fruit, this.x, this.y, this.size+50, this.size+50);
     }
 };
 
-Fruit.prototype.update = function(){
-    if(this.sliced && this.name != 'boom'){
-        this.x -= this.xSpeed ;
+Fruit.prototype.update = function () {
+    if (this.sliced && this.name != 'boom') {
+        this.x -= this.xSpeed;
         this.y += this.ySpeed;
-        this.ySpeed += gravity*5;
-    }else{
+        this.ySpeed += gravity * 5;
+    } else {
         this.x += this.xSpeed;
         this.y += this.ySpeed;
-        this.ySpeed += gravity;
+        this.ySpeed += gravity - 0.05;
+        // this.ySpeed += gravity;
     }
-    if(this.y > height){
+    if (this.y > height) {
         this.visible = false;
     }
 };
 
 function randomFruit(){ // Create randon fruit
-    var x = random(width);
-    var y = height;
+    var x = random(width-50);
+    var y = height-160;
+    // var y = height-90;
+    // var x = random(width);
+    // var y = height;
     var size = noise(frameCount)*20 + 40;
     var col = color(random(255),random(255),random(255));
     var speed = random(3,5);
@@ -58,6 +69,6 @@ function randomXSpeed(x){
     if( x > width/2 ){
         return random(-2.8,-0.5); // If fruit generated on right side, go left
     }else{
-        return random(0.5,2.8); // If fruit generated on right side, go left  
+        return random(0.5,2.8); // If fruit generated on right side, go left
     }
 };

@@ -10,11 +10,6 @@ var fruitsList = ['apple', 'banana', 'peach', 'strawberry', 'watermelon', 'boom'
 var fruitsImgs = [], slicedFruitsImgs = [];
 var livesImgs = [], livesImgs2 = [];
 var boom, spliced, missed, over, start; // sounds
-// var button, startButton;
-// var timer;
-// var counter = 60;
-// var seconds, minutes;
-// var timerValue = 60;
 
 function preload() {
     // LOAD SOUNDS
@@ -45,17 +40,29 @@ function preload() {
     ninjaLogo = loadImage('images/ninja.png');
     scoreImg = loadImage('images/score.png');
     newGameImg = loadImage('images/new-game.png');
-
     fruitImg = loadImage('images/fruitMode.png');
     gameOverImg = loadImage('images/game-over.png');
 }
 
 function setup() {
     cnv = createCanvas(1800, 2635);
+    cnv.position(180, 150);
+
     sword = new Sword(color("#FFFFFF"));
     frameRate(60);
     score = 0;
     lives = 3;
+
+    button = createButton("Reset"); // Draw a Reset button to allow the user to go home
+    button.id("reset");
+    button.style("background-color", "maroon");
+    button.style('font-size', '100px');
+    button.style('color', '#fff');
+    button.style('border', 'none');
+    button.style('padding', '50px');
+    button.style('display', 'none');
+    button.position(890, 1480);
+    button.mousePressed(resetSketch);
 }
 
 function draw() {
@@ -72,23 +79,16 @@ function draw() {
     image(this.fruitImg, 790, 1125, 160, 160); // Draws the watermelon on screen
 
     cnv.mouseClicked(check);
+
     if (isPlay) {
         game();
     }
-    //     if (timerValue >= 60) {
-    //         text("0:" + timerValue, width / 2, height / 2);
-    //     }
-    //     if (timerValue < 60) {
-    //         text('0:0' + timerValue, width / 2, height / 2);
-    //     }
 }
 
 function check() { // Check for game start
-    console.log("mouseX:", mouseX)
-    console.log("mouseY:", mouseY)
     if (!isPlay && (mouseX > 750 && mouseX < 950 && mouseY > 900 && mouseY < 1290)) {
-    // if (!isPlay && (mouseX > 300 && mouseX < 520 && mouseY > 350 && mouseY < 550)) {
-        start.play();
+        // if (!isPlay && (mouseX > 300 && mouseX < 520 && mouseY > 350 && mouseY < 550)) {
+        start.play();   
         isPlay = true;
     }
 }
@@ -96,15 +96,17 @@ function check() { // Check for game start
 function game() {
     clear();
     background(bg);
+
     if (mouseIsPressed) { // Draw sword
-        // image(fruitImg, mouseX, mouseY);
         sword.swipe(mouseX, mouseY);
     }
+
     if (frameCount % 5 === 0) {
         if (noise(frameCount) > 0.69) {
             fruit.push(randomFruit()); // Display new fruit
         }
     }
+
     points = 0
     for (var i = fruit.length - 1; i >= 0; i--) {
         fruit[i].update();
@@ -163,7 +165,7 @@ function drawLives() {
 }
 
 function drawScore() {
-    
+
     /**
      * @params path - x - y - width - height
      */
@@ -177,7 +179,7 @@ function drawScore() {
     /**
      * @params text - x - y
      */
-    text(score, 170, 300); // Draws the score text next to the watermenlon image
+    text(score, 170, 300); // Draws the score text next to the watermelon image
 }
 
 function gameOver() {
@@ -192,49 +194,17 @@ function gameOver() {
     image(this.gameOverImg, 650, 1180, 490, 85); // Draws the Game Over image on scren
 
     lives = 0;
-
-    button = createButton("Play again"); // Draw a Reset button to allow the user to go home
-    button.id("reset");
-    button.style("background-color", "maroon");
-    button.style('font-size', '100px');
-    button.style('color', '#fff');
-    button.style('border', 'none');
-    button.style('padding', '50px');
-    button.position(890, 1350);
-    button.mousePressed(resetSketch);
+    button.show()
 }
 
 function resetSketch() {
-    button.hide()
+    button.remove()// Removes the Reset button
+    // cnv.remove() // Removes the canva from the screen
+    window.location.reload()
 
-    isPlay = false
-    score = 0
-    lives = 3
-
-    setup()
-    draw()
+    // isPlay = false
+    // score = 0
+    // lives = 3
+    // setup()
+    // draw()
 }
-
-// timer = createP("timer");
-// setInterval(timeIt, 1000);
-
-// textAlign(CENTER);
-// setInterval(timeIt, 1000);
-
-//   if (timerValue == 0) {
-//     text('game over', width / 2, height / 2 + 15);
-//   }
-// fruit.push(new Fruit(random(width),height,3,"#FF00FF",random()));
-
-// function timeIt() {
-//     console.log("time");
-//     if (timerValue > 0) {
-//         console.log(timerValue);
-//         timerValue--;
-//         textAlign(CENTER);
-//         noStroke();
-//         fill(255,147,21);
-//         textSize(50);
-//         text(timerValue, 200, 250);
-//     }
-//   }
