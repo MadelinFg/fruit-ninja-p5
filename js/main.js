@@ -198,13 +198,15 @@ function gameOver() {
 }
 
 function resetSketch() {
-    button.remove()// Removes the Reset button
-    // cnv.remove() // Removes the canva from the screen
-    window.location.reload()
+    // Restablecer las variables del juego a sus valores iniciales
+    score = 0;
+    lives = 3;
+    fruit = []; // Vaciar el array de frutas
+    isPlay = false;
 
-    // isPlay = false
-    // score = 0
-    // lives = 3
-    // setup()
-    // draw()
+    // Ocultar el botón de reinicio
+    button.hide();
+
+    // Volver a iniciar el ciclo de dibujo
+    loop();
 }
